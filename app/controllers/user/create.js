@@ -1,11 +1,14 @@
 // Core
+const db = require('../../../db.js')
 const mock = require('../../models/get-user.js')
 const validator = require('node-validator')
+const userSchema = require('../../models/userSchema.js');
 
 const check = validator.isObject()
-  .withRequired('name', validator.isString())
-  .withOptional('age', validator.isNumber())
-  .withOptional('gender', validator.isString({ regex: /^male|femal$/ }))
+.withRequired('name', validator.isString())
+.withOptional('age', validator.isNumber())
+.withOptional('gender', validator.isString({ regex: /^male|femal$/ }))
+
 
 module.exports = class Create {
   constructor (app) {
@@ -17,15 +20,18 @@ module.exports = class Create {
   /**
    * Middleware
    */
-  middleware () {
+   middleware () {
     this.app.post('/user/create', validator.express(check), (req, res) => {
       try {
-        Object.assign(mock, {
-          [Object.keys(mock).length + 1]: req.body
-        })
+        var user = new userSchema({ name: req.body.name, age: req.body.age, gender: req.body.gender });
+        user.save(function (err) {
+          if (err) return handleError(err);
+          // saved!
+          });
 
-        res.status(200).json(mock || {})
+        res.status(200).json(user || {})
       } catch (e) {
+        console.log(e)
         console.error(`[ERROR] user/create -> ${e}`)
         res.status(400).json({
           'code': 400,
@@ -38,7 +44,7 @@ module.exports = class Create {
   /**
    * Run
    */
-  run () {
+   run () {
     this.middleware()
   }
 }
