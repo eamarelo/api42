@@ -1,5 +1,6 @@
 // Core
 const mock = require('../../models/get-user.js')
+const userSchema = require('../../models/userSchema.js');
 
 module.exports = class Destroy {
   constructor (app) {
@@ -14,16 +15,18 @@ module.exports = class Destroy {
   middleware () {
     this.app.delete('/user/destroy/:id', (req, res) => {
       try {
+        userSchema();
         if (!req.params || !req.params.id.length) {
           res.status(404).json({
             code: 404,
             message: 'Not Found'
           })
         }
+        userSchema.deleteOne({_id: req.params.id}, function (err, user) { 
+          console.log(err)        
+          res.status(200).json(user || {})
+        });
 
-        delete mock[req.params.id]
-
-        res.status(200).json(mock || {})
       } catch (e) {
         console.error(`[ERROR] user/destroy/:id -> ${e}`)
         res.status(400).json({
