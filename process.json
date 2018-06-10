@@ -3,6 +3,6 @@
     "name": "api42",
     "script": "./index.js",
     "exec_mode": "cluster",
-    "instances": 8
+    "instances": 1
   }]
 }
