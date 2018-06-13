@@ -4,7 +4,7 @@ const compression = require('compression');
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const db = require('../db.js')
+const db = require('../db.js');
 const userSchema = require('./models/userSchema.js');
 // Core
 const routes = require('./controllers/routes.js');
