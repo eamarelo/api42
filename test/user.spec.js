@@ -15,30 +15,34 @@ chai.use(chaiHttp);
  */
 describe('GET /user', () => {
   it('POST /create should create an user', (done) => {
-    const result = '{"1":{"name":"cyril","age":30,"gender":"male"},"2":{"name":"jp","age":24,"gender":"male"},"3":{"name":"guillaume","age":2,"gender":"male"},"4":{"name":"tutu","age":45,"gender":"male"}}';
-    const payload = {'name': 'tutu','age': 45,'gender': 'male'};
+    const payload = {   
+         'name' : 'testDebug',
+         'email' : 'test.debug@debug.com',
+         'password' : 'password'
+       };
 
     chai.request(app)
-      .post('/user/create')
+      .post('/auth/register')
       .send(payload)
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql(result);
 
           done();
       });
   });
 
   it('POST /create should check the payload body is false', (done) => {
-    const result = '{"errors":[{"parameter":"nme","value":"tutu","message":"Unexpected value."},{"parameter":"ag","value":40,"message":"Unexpected value."},{"parameter":"gende","value":"male","message":"Unexpected value."},{"parameter":"name","message":"Required value."}]}';
-    const payload = {'nme': 'tutu','ag': 40,'gende': 'male'};
+    const payload = {   
+         'name' : 'testDebug',
+         'email' : 'test.debug@debug.com',
+         'paord' : 'password'
+       }
 
     chai.request(app)
-      .post('/user/create')
+      .post('/auth/register')
       .send(payload)
       .end((err, res) => {
           res.should.have.status(400);
-          res.text.should.be.eql(result);
 
           done();
       });
@@ -46,10 +50,9 @@ describe('GET /user', () => {
 
   it('GET /show:id should not get an user by false id', (done) => {
     chai.request(app)
-      .get('/user/show/12')
+      .get('/user/show/5b21253efc6da929486ac1ee')
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql('{}');
 
           done();
       });
@@ -68,68 +71,59 @@ describe('GET /user', () => {
 
   it('GET /show:id should get an user result with id 1', (done) => {
     chai.request(app)
-      .get('/user/show/1')
+      .get('/user/show/5b21253efc6da929486ac1ee')
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql('{"name":"cyril","age":30,"gender":"male"}');
 
           done();
       });
   });
 
   it('POST /search should search user 1 and 2', (done) => {
-    const result = '{"1":{"name":"cyril","age":30,"gender":"male"},"3":{"name":"guillaume","age":2,"gender":"male"}}';
-    const payload = {'ids': ['1', '3']};
+    const payload = {'ids': ['5b21253efc6da929486ac1ee', '5b2125168b78c236d8b54605']};
 
     chai.request(app)
       .post('/user/search')
       .send(payload)
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql(result);
 
           done();
       });
   });
 
   it('POST /search should check the payload body is false', (done) => {
-    const result = '{"errors":[{"parameter":"id","value":["1","3"],"message":"Unexpected value."},{"parameter":"ids","message":"Required value."}]}';
-    const payload = {'id': ['1', '3']};
+    const payload = {'id': ['5b2125168b78c236d8b54605', '5b21253efc6da929486ac1ee']};
 
     chai.request(app)
       .post('/user/search')
       .send(payload)
       .end((err, res) => {
           res.should.have.status(400);
-          res.text.should.be.eql(result);
 
           done();
       });
   });
 
   it('PUT /update should update user', (done) => {
-    const result = '{"1":{"name":"Arnaud","age":30,"gender":"male"}}';
     const payload = {'name': 'Arnaud'};
 
     chai.request(app)
-      .put('/user/update/1')
+      .put('/user/update/5b21253efc6da929486ac1ee')
       .send(payload)
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql(result);
 
           done();
       });
   });
 
   it('DELETE /destroy/:id should delete an user', (done) => {
-    const result = '{"2":{"name":"jp","age":24,"gender":"male"},"3":{"name":"guillaume","age":2,"gender":"male"},"4":{"name":"tutu","age":45,"gender":"male"}}';
 
     chai.request(app)
-      .delete('/user/destroy/1')
+      .delete('/user/destroy/5b21253efc6da929486ac1ee')
       .end((err, res) => {
           res.should.have.status(200);
-          res.text.should.be.eql(result);
 
           done();
       });
