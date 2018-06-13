@@ -1,0 +1,86 @@
+FORMAT: 1A
+HOST: http://127.0.0.1:4000
+
+# API 42
+
+Here you can find the documentation of API42
+
+
+## User [/user]
+
+### Read a User by id [GET /user/show/{id}]
+
++ Attributes
+    + id (required, number) - The user id
+
++ Response 200 (application/json)
+{
+    "_id": "5b1d98e057c0ac4eb4882cbf",
+    "name": "toto",
+    "email": "toto@hotmail.fr",
+    "password": "$2a$08$1H3AbNikCvqJS6GFgU872.voqlih2B/dTVsDBOKsVnYgzwIMbTf6y",
+    "__v": 0
+}
+
++ Response 404 (application/json)
+{
+    "code": 404,
+    "message": "Not Found"
+}
+
+### Update a User by id [PUT /user/update{id}]
+
++ Attributes
+    + id (required, number) - The user id
+    + name (required, string) - The user name
+    + email (required, number) - The user email
+    + password (required, string) - The user password
+
++ Body
+{
+    "email": "elies@hotmail.fr"
+}
+
++ Response 200 (application/json)
+{
+    "n": 1,
+    "nModified": 1,
+    "ok": 1
+}
+
++ Response 404 (application/json)
+{
+    "n": 1,
+    "nModified": 0,
+    "ok": 1
+}
+
+
+### Delete a User by id [DELETE /user/destroy/:id:]
+
++ Attributes
+    + id (required, number) - The user id
+
+
++ Response 200 (application/json)
+{
+    "n": 1,
+    "ok": 1
+}
+
++ Response 404 (application/json)
+{
+    "n": 0,
+    "ok": 1
+}
+
+## 404 Request Not Found [/]
+
+### 404 Request not found [GET /random-uri]
+
++ Response 404 (application/json)
+{
+        "status": 404,
+        "message": "404 request not found",
+        "data": null
+}
