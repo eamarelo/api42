@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "fdf34fb6-ef51-4b4c-b73d-278de9072ed6",
+		"name": "api42",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"echo\",\n  \"email\":\"echo@hotmail.fr\",\n  \"password\":\"echo\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/auth/register/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"auth",
+						"register",
+						""
+					]
+				},
+				"description": "regist an unser"
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:4000/user/show/5b2113be4e86065358bfad90",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"show",
+						"5b2113be4e86065358bfad90"
+					]
+				},
+				"description": "get user by id"
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"GuiU\",\n    \"email\": \"elies@hotmail.fr\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/user/update/5b2113be4e86065358bfad90",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"update",
+						"5b2113be4e86065358bfad90"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"toto@hotmail.fr\",\n  \"password\":\"tata\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"auth",
+						"login"
+					]
+				},
+				"description": "log an user and take token "
+			},
+			"response": []
+		},
+		{
+			"name": "search users by id",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ids\":[\"5b20204152945d0cc4bf6e23\"]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/user/search",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"search"
+					]
+				},
+				"description": "search users by id"
+			},
+			"response": []
+		},
+		{
+			"name": "delete an user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:4000/user/destroy/5b1d98e057c0ac4eb4882cbf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"destroy",
+						"5b1d98e057c0ac4eb4882cbf"
+					]
+				},
+				"description": "delete an user"
+			},
+			"response": []
+		}
+	]
+}
