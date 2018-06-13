@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/api-42');
+mongoose.connect('mongodb://localhost/api42');
 let db = mongoose.connection;
 
 // Check connection

@@ -1,9 +1,10 @@
 // Core
 const mock = require('../../models/get-user.js')
 const validator = require('node-validator')
+const userSchema = require('../../models/userSchema.js');
 
 const check = validator.isObject()
-  .withRequired('ids', validator.isArray())
+.withRequired('ids', validator.isArray())
 
 module.exports = class Search {
   constructor (app) {
@@ -15,19 +16,28 @@ module.exports = class Search {
   /**
    * Middleware
    */
-  middleware () {
+   middleware () {
     this.app.post('/user/search', validator.express(check), (req, res) => {
       try {
+        userSchema();
         const result = {}
         const ids = req.body.ids
 
-        for (let i = 0, len = ids.length; i < len; i += 1) {
-          Object.assign(result, {
-            [ids[i]]: mock[ids[i]]
-          })
-        }
+        const searchData = ids.filter(id => id.match(/^[0-9a-fA-F]{24}$/)).map(id => ({ '_id': id }))
 
-        res.status(200).json(result)
+        userSchema.find({
+          $and: [
+          {
+            $or: searchData
+          }
+          ]
+        }).exec().then(result => {
+          console.log(result)
+          res.status(200).json(result)
+        })
+        .catch(err => {
+          console.log(err)
+        })
       } catch (e) {
         console.error(`[ERROR] user/search -> ${e}`)
         res.status(400).json({
@@ -41,7 +51,7 @@ module.exports = class Search {
   /**
    * Run
    */
-  run () {
+   run () {
     this.middleware()
   }
 }

@@ -17,17 +17,17 @@ module.exports = class Show {
     this.app.get('/user/show/:id', (req, res) => {
       try {
         userSchema();
-        if (!req.params || !req.params.id.length) {
-          res.status(404).json({
-            code: 404,
-            message: 'Not Found'
-          })
-        }
         userSchema.findOne({_id: req.params.id}, function (err, user) { 
-          res.status(200).json(user || {})
+          if (err) {
+            res.status(404).json({
+              code: 404,
+              message: 'User not found'
+            })
+          }
+          else{
+            res.status(200).json(user)
+          }
         });
-
-
       } catch (e) {
         console.error(`[ERROR] user/show/:id -> ${e}`)
         res.status(400).json({
