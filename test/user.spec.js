@@ -8,6 +8,8 @@ const server = new Server();
 const app = server.app;
 const should = chai.should();
 
+var idUser;
+
 chai.use(chaiHttp);
 
 /**
@@ -25,8 +27,8 @@ chai.use(chaiHttp);
    .post('/auth/register')
    .send(payload)
    .end((err, res) => {
+    idUser = res.body.id; 
     res.should.have.status(200);
-
     done();
   });
  });
@@ -43,7 +45,7 @@ chai.use(chaiHttp);
    .send(payload)
    .end((err, res) => {
     res.should.have.status(400);
-    res.text.should.be.eql('{"code":400,"message": "Bad request"}');
+    res.text.should.be.eql('{"code":400,"message":"Bad request"}');
 
     done();
   });
@@ -51,7 +53,7 @@ chai.use(chaiHttp);
 
   it('GET /show:id should not get an user by false id', (done) => {
     chai.request(app)
-    .get('/user/show/5b21253efc6da929481ee')
+    .get('/user/show/5b2273486614aa58f4')
     .end((err, res) => {
       res.should.have.status(404);
       res.text.should.be.eql('{"code":404,"message":"User not found"}');
@@ -71,9 +73,9 @@ chai.use(chaiHttp);
     });
   });
 
-  it('GET /show:id should get an user result with id 1', (done) => {
+  it('GET /show:id should get an user result with id ', (done) => {
     chai.request(app)
-    .get('/user/show/5b21253efc6da929486ac1ee')
+    .get('/user/show/' + idUser)
     .end((err, res) => {
       res.should.have.status(200);
 
@@ -82,7 +84,7 @@ chai.use(chaiHttp);
   });
 
   it('POST /search should search many users by id', (done) => {
-    const payload = {'ids': ['5b21253efc6da929486ac1ee', '5b2125168b78c236d8b54605']};
+    const payload = {'ids': [idUser]};
 
     chai.request(app)
     .post('/user/search')
@@ -95,14 +97,14 @@ chai.use(chaiHttp);
   });
 
   it('POST /search should check the payload body is false', (done) => {
-    const payload = {'id': ['5b2125168b78c236d8b54605', '5b21253efc6da929486ac1ee']};
+    const payload = {'ids': []};
 
     chai.request(app)
     .post('/user/search')
     .send(payload)
     .end((err, res) => {
       res.should.have.status(400);
-      res.text.should.be.eql('{"code":400,"message": "Bad request"}');
+      res.text.should.be.eql('{"code":400,"message":"Bad request"}');
 
       done();
     });
@@ -112,7 +114,7 @@ chai.use(chaiHttp);
     const payload = {'name': 'Arnaud'};
 
     chai.request(app)
-    .put('/user/update/5b21253efc6da929486ac1ee')
+    .put('/user/update/' + idUser)
     .send(payload)
     .end((err, res) => {
       res.should.have.status(200);
@@ -124,7 +126,7 @@ chai.use(chaiHttp);
   it('DELETE /destroy/:id should delete an user', (done) => {
 
     chai.request(app)
-    .delete('/user/destroy/5b21253efc6da929486ac1ee')
+    .delete('/user/destroy/' + idUser)
     .end((err, res) => {
       res.should.have.status(200);
 

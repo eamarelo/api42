@@ -1,20 +1,13 @@
-var jwt = require('jsonwebtoken');
-var config = require('./secret');
-function Verification(req, res, next) {
-
-}
-module.exports = Verification;
-
-// AuthController.js
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
-var config = require('./secret');
-var VerifyToken = require('./verification');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const config = require('./secret');
+const VerifyToken = require('./verification');
 
 const db = require('../../../db.js')
 const validator = require('node-validator')
 const userSchema = require('../../models/userSchema.js');
 
+// AuthController.js
 module.exports = class Verification {
   constructor (app) {
     this.app = app

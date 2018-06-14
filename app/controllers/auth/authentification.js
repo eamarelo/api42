@@ -1,8 +1,8 @@
 // AuthController.js
-var jwt = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
-var config = require('./secret');
-var VerifyToken = require('./verification');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const config = require('./secret');
+const VerifyToken = require('./verification');
 
 const db = require('../../../db.js')
 const validator = require('node-validator')
@@ -29,22 +29,20 @@ module.exports = class Authentification {
          password : hashedPassword
        });
 
-        user.save(function (err) {
+        user.save(function (err, data) {
           if (err) return handleError(err);
           // saved!
+          else{
+            res.status(200).json({ auth: true, token: token, id : data._id} || {})
+          }
         });
         var token = jwt.sign({ id: user._id }, config.secret, {
-      expiresIn: 86400 // expires in 24 hours
-    });
-
-        res.status(200).json({ auth: true, token: token } || {})
+              expiresIn: 86400 // expires in 24 hours
+        });
       } catch (e) {
         console.log(e)
         console.error(`[ERROR] user/create -> ${e}`)
-        res.status(400).json({
-          'code': 400,
-          'message': 'Bad request'
-        })
+        res.status(400).json({"code":400,"message":"Bad request"})
       }
     })
   }
