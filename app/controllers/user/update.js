@@ -23,9 +23,9 @@ module.exports = class Update {
           })
         }
         userSchema.findOne({_id: req.params.id}, function (err, user) { 
-          console.log(err)
+            if(err) return err;
         });
-        userSchema.update({ name: req.body.name, age: req.body.age, gender: req.body.gender}, function (err, user){
+        userSchema.update({_id: req.params.id}, req.body, function (err, user){
           res.status(200).json(user || {})
         });
       } catch (e) {
